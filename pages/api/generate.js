@@ -34,7 +34,6 @@ export default async function(req, res){ //request, response
       temperature: 0.8,
       max_tokens: 60
     });
-    // res.status(200).json({result : response.data.choices[0].text })
     res.status(200).json({result : response.data.choices[0].text })
   }
   catch(error){
@@ -52,6 +51,3 @@ export default async function(req, res){ //request, response
     }
   }
 }
-
-
-// sk-mxNTvZDe1WeBtzGQoAqAT3BlbkFJpcSPemo5BzliFvSuIhv

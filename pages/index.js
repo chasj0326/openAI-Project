@@ -17,8 +17,8 @@ export default function Home() {
           animal:animalInput
         }
       });
-      const data = await response.data;
-      if(response.status.ok){ //response.status =='200'
+      const data = response.data;
+      if(response.status === '200'){ 
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
       setResult(data.result);

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {useState} from 'react';
 
 export default function Home() {
@@ -7,26 +8,28 @@ export default function Home() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
-       const response = await fetch('./api/generate', {
+      const response = await axios('./api/generate',{
         method: 'POST',
         headers: {
           "Content-Type" : "application/json"
         },
-        body: JSON.stringify({animal: animalInput})
-      })
-      const data = await response.json();
-      if(response.status !== 200){ //status(200) : success
-        throw data.error || new Error(`Request failed with status ${response.status}`)
+        data: {
+          animal:animalInput
+        }
+      });
+      const data = await response.data;
+      if(response.status.ok){ //response.status =='200'
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
-      console.log(animalInput);
       setResult(data.result);
       setAnimalInput('');
     }
     catch(error){
-      console.error(error)
-      alert(error.message)
+      console.log(error);
+      alert(error.message);
     }
   }
+  
   return (
     <>
       <div>

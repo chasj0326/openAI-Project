@@ -2,14 +2,30 @@ import {useState} from 'react';
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState('');
-  const handleSubmit = (e) => {
+  const [result, setResult] = useState('...');
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    if(animalInput===''){
-      alert('please Input Your Animal!')
-      return;
+    try{
+       const response = await fetch('./api/generate', {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({animal: animalInput})
+      })
+      const data = await response.json();
+      if(response.status !== 200){ //status(200) : success
+        throw data.error || new Error(`Request failed with status ${response.status}`)
+      }
+      console.log(animalInput);
+      setResult(data.result);
+      setAnimalInput('');
     }
-    console.log(animalInput);
-    setAnimalInput('');
+    catch(error){
+      console.error(error)
+      alert(error.message)
+    }
   }
   return (
     <>
@@ -31,6 +47,9 @@ export default function Home() {
             value = 'Generate names'
           />
         </form>
+      </div>
+      <div>
+        {result}
       </div>
     </>
   )
